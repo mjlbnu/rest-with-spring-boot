@@ -1,4 +1,4 @@
-package br.com.programadorbr.Spring.Boot.project;
+package br.com.programadorbr;
 
 public class Greeting {
 

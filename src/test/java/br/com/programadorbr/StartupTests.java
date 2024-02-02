@@ -1,4 +1,4 @@
-package br.com.programadorbr.Spring.Boot.project;
+package br.com.programadorbr;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

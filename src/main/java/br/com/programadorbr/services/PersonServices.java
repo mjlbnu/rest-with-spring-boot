@@ -4,6 +4,7 @@ import br.com.programadorbr.data.vo.v1.PersonVO;
 import br.com.programadorbr.data.vo.v2.PersonVOV2;
 import br.com.programadorbr.exceptions.ResourceNotFoundException;
 import br.com.programadorbr.mapper.DozerMapper;
+import br.com.programadorbr.mapper.custom.PersonMapper;
 import br.com.programadorbr.model.Person;
 import br.com.programadorbr.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class PersonServices {
 
     @Autowired
     PersonRepository repository;
+
+    @Autowired
+    PersonMapper personMapper;
 
     public PersonVO findById(Long id) {
         logger.info("Finding one person");
@@ -42,10 +46,10 @@ public class PersonServices {
     }
 
     public PersonVOV2 createV2(PersonVOV2 person) {
-        logger.info("Creating one person with V@");
+        logger.info("Creating one person with V2");
 
-        var entity = DozerMapper.parseObject(person, Person.class);
-        return DozerMapper.parseObject(repository.save(entity), PersonVOV2.class);
+        var entity = personMapper.convertVoToEntity(person);
+        return personMapper.convertEntityToVo(repository.save(entity));
     }
 
     public PersonVO update(PersonVO person) {

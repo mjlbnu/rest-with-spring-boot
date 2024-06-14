@@ -1,6 +1,7 @@
 package br.com.programadorbr.exceptions.handler;
 
 import br.com.programadorbr.exceptions.ExceptionResponse;
+import br.com.programadorbr.exceptions.RequiredObjectIsNullException;
 import br.com.programadorbr.exceptions.ResourceNotFoundException;
 import br.com.programadorbr.exceptions.UnsuportedMathOperationException;
 import org.springframework.http.HttpStatus;
@@ -48,5 +49,16 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         );
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RequiredObjectIsNullException.class)
+    public final ResponseEntity<ExceptionResponse> handleBadRequest2Exceptions(Exception exception, WebRequest webRequest) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                exception.getMessage(),
+                webRequest.getDescription(false)
+        );
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }

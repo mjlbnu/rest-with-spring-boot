@@ -3,6 +3,7 @@ package br.com.programadorbr.services;
 import br.com.programadorbr.controllers.PersonController;
 import br.com.programadorbr.data.vo.v1.PersonVO;
 import br.com.programadorbr.data.vo.v2.PersonVOV2;
+import br.com.programadorbr.exceptions.RequiredObjectIsNullException;
 import br.com.programadorbr.exceptions.ResourceNotFoundException;
 import br.com.programadorbr.mapper.DozerMapper;
 import br.com.programadorbr.mapper.custom.PersonMapper;
@@ -46,6 +47,8 @@ public class PersonServices {
     }
 
     public PersonVO create(PersonVO person) {
+        if (person == null) throw new RequiredObjectIsNullException();
+
         logger.info("Creating one person");
 
         var entity = DozerMapper.parseObject(person, Person.class);
@@ -62,6 +65,8 @@ public class PersonServices {
     }
 
     public PersonVO update(PersonVO person) {
+        if (person == null) throw new RequiredObjectIsNullException();
+
         logger.info("Updating one person");
 
         var entity = repository.findById(person.getKey())

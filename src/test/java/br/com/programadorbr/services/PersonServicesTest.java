@@ -1,6 +1,7 @@
 package br.com.programadorbr.services;
 
 import br.com.programadorbr.data.vo.v1.PersonVO;
+import br.com.programadorbr.exceptions.RequiredObjectIsNullException;
 import br.com.programadorbr.mapper.mocks.MockPerson;
 import br.com.programadorbr.model.Person;
 import br.com.programadorbr.repositories.PersonRepository;
@@ -38,7 +39,7 @@ class PersonServicesTest {
     }
 
     @Test
-    void findById() {
+    void findByIdTest() {
         Person entity = mockPerson.mockEntity(1);
 
         when(personRepository.findById(entity.getId())).thenReturn(Optional.of(entity));
@@ -59,7 +60,7 @@ class PersonServicesTest {
     }
 
     @Test
-    void create() {
+    void createTest() {
         Person entity = mockPerson.mockEntity(1);
         PersonVO personVO = mockPerson.mockVO(1);
         when(personRepository.save(entity)).thenReturn(entity);
@@ -76,7 +77,18 @@ class PersonServicesTest {
     }
 
     @Test
-    void update() {
+    void createWithNullTest() {
+        Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+            services.create(null);
+        });
+        String expectedMessage = "It is not allowed to persist a null object!";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void updateTest() {
         Person entity = mockPerson.mockEntity(1);
         PersonVO personVO = mockPerson.mockVO(1);
 
@@ -95,7 +107,18 @@ class PersonServicesTest {
     }
 
     @Test
-    void delete() {
+    void updateWithNullTest() {
+        Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+            services.update(null);
+        });
+        String expectedMessage = "It is not allowed to persist a null object!";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void deleteTest() {
         Person entity = mockPerson.mockEntity(1);
         when(personRepository.findById(entity.getId())).thenReturn(Optional.of(entity));
         services.delete(1L);

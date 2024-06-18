@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 @Service
 public class PersonServices {
 
-    private final AtomicLong counter = new AtomicLong();
     private Logger logger = Logger.getLogger(PersonServices.class.getName());
 
     @Autowired
@@ -33,7 +32,7 @@ public class PersonServices {
     public PersonVO findById(Long id) {
         logger.info("Finding one person");
 
-        var entity =  repository.findById(id)
+        var entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
         PersonVO vo = DozerMapper.parseObject(entity, PersonVO.class);
         vo.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
@@ -41,7 +40,9 @@ public class PersonServices {
     }
 
     public List<PersonVO> findAll() {
-        var persons =  DozerMapper.parseListObjects(repository.findAll(), PersonVO.class);
+        logger.info("Finding all persons");
+
+        var persons = DozerMapper.parseListObjects(repository.findAll(), PersonVO.class);
         persons.forEach(p -> p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()));
         return persons;
     }
@@ -52,7 +53,7 @@ public class PersonServices {
         logger.info("Creating one person");
 
         var entity = DozerMapper.parseObject(person, Person.class);
-        PersonVO vo =  DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+        PersonVO vo = DozerMapper.parseObject(repository.save(entity), PersonVO.class);
         vo.add(linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());
         return vo;
     }

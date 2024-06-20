@@ -13,7 +13,6 @@ import java.util.Objects;
 @JsonPropertyOrder({"id", "author", "launchDate", "price", "title"})
 public class BookVO extends RepresentationModel<BookVO> implements Serializable {
 
-    @Serial
     private static final long serialVersionUID = 1L;
 
     @JsonProperty("id")
